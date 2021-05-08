@@ -4,7 +4,7 @@ appConfig:
 image:
   repository: docker.io/akshay5207/demoapp
   tag: new
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   name: sample
   type: NodePort
