@@ -1,0 +1,39 @@
+replicaCount: 2
+appConfig:
+  appName: sample
+image:
+  repository: docker.io/akshay5207/demoapp
+  tag: new
+  pullPolicy: IfNotPresent
+service:
+  name: sample
+  type: NodePort
+  externalPort: 8092
+  internalPort: 8092
+extraContainers:
+-  name: nginx
+   repository: docker.io/library/nginx
+   tag: latest
+   internalPort: 80
+   pullPolicy: IfNotPresent
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  hosts:
+    - host:
+      paths:
+      - path: /*
+        backend:
+          serviceName: sampleapp
+          servicePort: 8092
+  tls: []
